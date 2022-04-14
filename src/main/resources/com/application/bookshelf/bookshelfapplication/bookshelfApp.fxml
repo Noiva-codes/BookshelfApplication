@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="520.0" maxWidth="675.0" minHeight="520.0" minWidth="675.0" prefHeight="520.0" prefWidth="675.0" scaleShape="false" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.bookshelf.bookshelfapplication.BookshelfController">
+<AnchorPane fx:id="basePane" maxHeight="520.0" maxWidth="675.0" minHeight="520.0" minWidth="675.0" prefHeight="520.0" prefWidth="675.0" scaleShape="false" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.bookshelf.bookshelfapplication.BookshelfController">
    <children>
       <Label alignment="CENTER" layoutX="15.0" prefHeight="40.0" prefWidth="675.0" text="Bookshelf App" AnchorPane.rightAnchor="1.0">
          <font>
@@ -20,7 +20,7 @@
          </font>
       </Label>
       <TextField fx:id="searchField" layoutX="14.0" layoutY="40.0" prefHeight="25.0" prefWidth="427.0" promptText="Search for a Book!" />
-      <Button fx:id="addButton" layoutX="464.0" layoutY="40.0" mnemonicParsing="false" text="Add..." />
+      <Button fx:id="addButton" layoutX="464.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#addBook" text="Add..." />
       <Button fx:id="importButton" layoutX="528.0" layoutY="40.0" mnemonicParsing="false" text="Import" />
       <ScrollPane fx:id="scrollPane" layoutX="-1.0" layoutY="69.0" prefHeight="453.0" prefWidth="675.0">
         <content>
@@ -40,9 +40,9 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="img1" fitHeight="149.0" fitWidth="202.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../../Pictures/BlueStacks/sheem.PNG" />
+                              <Image url="@images/sheem.PNG" />
                            </image>
                         </ImageView>
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
@@ -60,9 +60,8 @@
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <image>
-                              <Image url="@../../../../../../../../../Pictures/BlueStacks/Capture.PNG" />
-                           </image>
-                        </ImageView>
+                              <Image url="@images/Capture.PNG" />
+                           </image></ImageView>
                      </children>
                   </GridPane>
                </children>
