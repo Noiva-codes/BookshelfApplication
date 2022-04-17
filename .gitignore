@@ -1,4 +1,6 @@
 # Comments #
 
 /.idea/
+#Shebang means
 !/images/
+/saves/
