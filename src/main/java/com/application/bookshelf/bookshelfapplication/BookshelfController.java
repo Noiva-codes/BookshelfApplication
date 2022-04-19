@@ -1,11 +1,10 @@
 package com.application.bookshelf.bookshelfapplication;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -13,19 +12,17 @@ import javafx.scene.layout.GridPane;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class BookshelfController {
     // One HashMap to control the bookName - File Path connection
     // HashMap handles duplicates, so we don't have to check for that.
-    HashMap<String, File> bookList = new HashMap<>();
+    HashMap<String, File> bookList = new HashMap<>(); //String is book's name - File is file location
 
     @FXML
     private Button addButton;
@@ -50,6 +47,9 @@ public class BookshelfController {
     @FXML
     private TextField searchField;
 
+
+    /* TODO: Make the code here cleaner in a later version - try making saveBookList it's own function to be called
+     when necessary for imports and such */
     @FXML
     void addBook(MouseEvent event) {
         // FileChooser beginnings right there - review FileChooser when stuck
@@ -71,6 +71,7 @@ public class BookshelfController {
         // Save Book to HashMap
         bookList.put(bookName, bookPath); //add in order of key:value;
         saveBookList();
+        updateImages(bookList);
     }
 
     // This should write to a file that saves all of our books on our computer.
@@ -84,7 +85,7 @@ public class BookshelfController {
             savedBooks.createNewFile();
             //Since all things have worked, write to the file we created.
             writeBookList(savedBooks.toPath());
-
+            //Now update the images in the gridpane
         // TODO: Make catches create a popup dialog that informs the issue to the user.
         } catch(SecurityException se) {
             System.out.println("Save file not created. Check your security manager to allow this program to work.");
@@ -109,4 +110,49 @@ public class BookshelfController {
                     ", Path to file = " + books.getValue());
         }
     }
+
+    private void updateImages(HashMap<String, File> books) {
+        // TODO: Updates images in the Gridpane
+        //This should update the image windwow for ever new picture added
+        //First we must loop through the HashMap proportional to the size
+        ImageView thumbnail = null;
+
+        /* Try this implementation later
+        Set bookImages = (Set) books.entrySet();
+        Iterator loop = bookImages.iterator();
+        Map booksMap = (Map) books.clone();
+        Iterator loopOver = booksMap.iterator();
+
+        int count = 0;
+        while ( (loop.hasNext()) && ( count < 15 ) ) {
+            Map.Entry image = booksMap.next();
+
+        } */
+        List<File> files = new ArrayList<>();
+        for (File file : books.values()) {
+            files.add(file);
+            System.out.println(file);
+        }
+        File[] paths = files.toArray(new File[0]);
+        Iterator loop = files.iterator();
+        int count = 0;
+        while ((loop.hasNext()) && (count < 15)) {
+            //Create Images of what's in the array.
+            BookshelfImage imageCreation = new BookshelfImage(paths[count], paths[count].toPath());
+            try {
+                imageCreation.thumbnail();
+            } catch (IOException ioe2) {
+                System.out.println("Failed at image creation.");
+                ioe2.printStackTrace();
+            }
+
+            loop.next();
+            count++;
+
+        }
+
+        //System.out.println(thumbnail.toString());
+    }
+
+
 }
