@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -12,17 +11,18 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="basePane" maxHeight="520.0" maxWidth="675.0" minHeight="520.0" minWidth="675.0" prefHeight="520.0" prefWidth="675.0" scaleShape="false" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.bookshelf.bookshelfapplication.BookshelfController">
+<AnchorPane fx:id="basePane" maxHeight="526.0" maxWidth="676.0" minHeight="516.0" minWidth="675.0" prefHeight="526.0" prefWidth="676.0" scaleShape="false" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.bookshelf.bookshelfapplication.BookshelfController">
    <children>
+      <Button fx:id="addAllButton" layoutX="595.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#addAllBooks" text="Add All..." />
       <Label alignment="CENTER" layoutX="15.0" prefHeight="40.0" prefWidth="675.0" text="Bookshelf App" AnchorPane.rightAnchor="1.0">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="searchField" layoutX="14.0" layoutY="40.0" prefHeight="25.0" prefWidth="427.0" promptText="Search for a Book!" />
+      <TextField fx:id="searchField" layoutX="14.0" layoutY="40.0" onKeyPressed="#textSearched" prefHeight="25.0" prefWidth="427.0" promptText="Search for a Book!" />
       <Button fx:id="addButton" layoutX="464.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#addBook" text="Add..." />
-      <Button fx:id="importButton" layoutX="528.0" layoutY="40.0" mnemonicParsing="false" text="Import" />
-      <ScrollPane fx:id="scrollPane" layoutX="-1.0" layoutY="69.0" prefHeight="453.0" prefWidth="675.0">
+      <Button fx:id="importButton" layoutX="528.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#importBooks" text="Import" />
+      <ScrollPane fx:id="scrollPane" layoutX="-1.0" layoutY="69.0" prefHeight="455.0" prefWidth="675.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="801.0" prefWidth="673.0">
                <children>
@@ -40,28 +40,21 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <ImageView fx:id="img1" fitHeight="46.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/sheem.PNG" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
+                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
+                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4" />
+                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                         <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <ImageView fitHeight="150.0" fitWidth="208.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                           <image>
-                              <Image url="@images/Capture.PNG" />
-                           </image></ImageView>
+                        <ImageView fitHeight="150.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                </children>

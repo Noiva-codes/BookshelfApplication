@@ -21,7 +21,7 @@ public class BookshelfImage {
 
     Path pathToPDF;
     File bookName;
-    private final String imagesPath = "./images/";
+    private final String IMG_PATH = "./images/";
 
     public BookshelfImage(File bookName, Path pathToPDF) {
         this.pathToPDF = pathToPDF; //Path to the the PDF
@@ -36,9 +36,15 @@ public class BookshelfImage {
         PDDocument bookFile = PDDocument.load(this.bookName);
         PDFRenderer renderer = new PDFRenderer(bookFile);
         //Create a buffered image from the first page of the book.
+        //Image size we need for the ImageView is 150 height, 222 width
+        //300 dpi = ??? 2k by 2.7k, Width by Height
+        // 72 dpi = 540 x 666
+        // 36 dpi = 270 x 333
+        // 27 dpi ~ 201 x 254
+        // 18 dpi = 135 x 166
         BufferedImage thumbnail = renderer.renderImageWithDPI(0, 300, ImageType.RGB);
         //Use fileName to make a complete path to images folder
-        String fileName = imagesPath + this.bookName.getName().substring(0,this.bookName.getName().length()-4) + ".png";
+        String fileName = IMG_PATH + this.bookName.getName().substring(0,this.bookName.getName().length()-4) + ".png";
         ImageIOUtil.writeImage(thumbnail, fileName, 1);
         bookFile.close();
 
@@ -49,5 +55,12 @@ public class BookshelfImage {
         //return new Image(thumbnail.toString());
     }
 
+    public String getImagePath() {
+        return IMG_PATH;
+    }
 
+    // Returns the bookname as a String
+    public String getBookName() {
+        return bookName.getName();
+    }
 }
