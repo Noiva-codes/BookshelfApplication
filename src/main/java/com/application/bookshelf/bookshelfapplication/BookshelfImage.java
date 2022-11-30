@@ -30,7 +30,6 @@ public class BookshelfImage {
 
     //This function should create an image from the first page in the PDF.
     public void thumbnail() throws IOException {
-        // TODO: actually complete - should create a thumbnail. The whole purpose of this class.
         // Size constraints: Height: 150 px, Width 222 px for the size we have the program at right now.
         //Create a PDDocument reader object and a renderer obj to create thumbnail.
         PDDocument bookFile = PDDocument.load(this.bookName);
@@ -47,7 +46,6 @@ public class BookshelfImage {
         String fileName = IMG_PATH + this.bookName.getName().substring(0,this.bookName.getName().length()-4) + ".png";
         ImageIOUtil.writeImage(thumbnail, fileName, 1);
         bookFile.close();
-
 
         // Finish this return statement appropriately using ImageWriterIOUtils from PDFApache
         //String of an image will not work

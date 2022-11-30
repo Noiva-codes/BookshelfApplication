@@ -3,6 +3,7 @@ module com.application.bookshelf.bookshelfapplication {
     requires javafx.fxml;
     requires pdfbox.app;
     requires java.desktop;
+    requires org.controlsfx.controls;
 
 
     opens com.application.bookshelf.bookshelfapplication to javafx.fxml;

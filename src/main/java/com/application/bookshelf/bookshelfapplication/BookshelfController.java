@@ -1,6 +1,5 @@
 package com.application.bookshelf.bookshelfapplication;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -8,32 +7,41 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.control.ListView;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.util.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
-import java.util.stream.Stream;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
+
 
 public class BookshelfController {
     // One HashMap to control the bookName - File Path connection
     // HashMap handles duplicates, so we don't have to check for that.
-    HashMap<String, File> bookList = new HashMap<>(); //String is book's name - File is file location
-    final int bsaHEIGHT = 150;
-    final int bsaWIDTH = 220;
+    HashMap<String, File> bookList = new HashMap<>(50); //String is book's name - File is file location
+    final int BSAHEIGHT = 150;
+    final int BSAWIDTH = 220;
     private final String IMP_PATH = "./saves/";
     private final String IMG_TYPE = ".png";
-    private final String LOCAL_SAVE_SEPARATOR = "[-bsa-]";
     Image[] thumbnailImages = new Image[15];
+    ArrayList<String> suggestions = new ArrayList<String>();
+    private AutoCompletionBinding<String> autoCompletionBinding;
+
+    //We can refactor the code later to be more efficient...
+    //ListView methods, updating images method
 
     // Proposed Size Change for the project: half of 1920 (w) by 1080 (h) - 960 x 810
     @FXML
@@ -59,15 +67,63 @@ public class BookshelfController {
     @FXML
     private TextField searchField;
 
+    @FXML
+    private StackPane stackPane;
+
+    @FXML
+    private ListView<String> listViewInStack;
+
     public void initialize() {
+    //TODO: Initialize the file directory for program, otherwise close
+        //Initialize text field so it is no longer null
+
+        //set the StackPane to invisible; default is visible.
+        stackPane.setVisible(false);
+        //String[] wttj = {"Welcome", " To", "The", "Jungle"};
+        //listViewInStack.getItems().addAll(wttj);
+        searchField.setPromptText("Search for a book you own!");
+        bindTextSearched();
+    }
+
+    //Get the selection is not working currently, but we can fix this
+    @FXML
+    void selectBookTitle(MouseEvent event) {
+        //if(listViewInStack.getItems().size() != 0)
+            searchField.setText(listViewInStack.getSelectionModel().getSelectedItem());
 
     }
 
     @FXML
     void textSearched(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
+            //Open the book if you press enter
+            //TODO: OPEN THE BOOK METHOD
             System.out.println(searchField.getText());
+
+            //Clear the text - because we want the dropdown to go away
+            searchField.setText("");
         }
+    }
+
+    @FXML
+    void showDropdown(KeyEvent event) {
+        // If there are words in the box, make the dropdown disappear
+        if (searchField.getLength() != 0)  {
+            stackPane.setVisible(true);
+        } else {
+            stackPane.setVisible(false);
+        }
+
+    }
+
+    // This method will bind our text field to help autocompletion.
+    private void bindTextSearched() {
+        TextFields.bindAutoCompletion(searchField, suggestions);
+    }
+
+    void openBook(String bookTitle) {
+        //We take the title of the book and then use that to find the path of the book
+        //With this we'll be able to open the book
     }
 
     @FXML
@@ -102,8 +158,7 @@ public class BookshelfController {
         }
     }
 
-    /* TODO: Make the code here cleaner in a later version - try making saveBookList it's own function to be called
-     when necessary for imports and such */
+
     @FXML
     void addBook(MouseEvent event) {
         //Incorporate FileChooser
@@ -127,9 +182,12 @@ public class BookshelfController {
         updateImages(bookList);
     }
 
+    /* TODO: Make the code here cleaner in a later version - try making saveBookList it's own function to be called
+       TODO: when necessary for imports and such */
     // This should write to a file that saves all of our books on our computer.
     void saveBookList() {
         //Write to a file that saves all of our books on our computer.
+        // TODO: Improve performance by calling saveBookList in initialize()
         File saves = new File("/saves/"); //path for creating directory
         File savedBooks = new File("./saves/saves.bsa"); //path for creating file
         try {
@@ -156,6 +214,8 @@ public class BookshelfController {
             //Must add "f" to the end of the key because my Regex string excludes regular pdf
             bookEntry = books.getKey() +"\n" + books.getValue().toString() + "\n";
             bookInformation.add(bookEntry);
+            // Adds the booknames to the autocomplete as well
+            suggestions.add(String.valueOf(books.getValue())); //No clue why it wants me to do valueOf
         }
         Files.write(localSave, bookInformation, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
     }
@@ -173,14 +233,18 @@ public class BookshelfController {
             while(file < importedInfo.size()) {
                 //Currently what it's pointing at
                 bookList.put(importedInfo.get(file), new File(importedInfo.get(file+1).trim()));
+                //Size of the hashMap should always be even, so we are safe to increment by 2 in all cases.
+                suggestions.add(String.valueOf(importedInfo.get(file)));
+                listViewInStack.getItems().add(importedInfo.get(file));
                 file+=2;
                 printBookList();
+                // Breakpoint to investigate for performance
                 //updateImages(bookList);
 
             }
             //printBookList();
         } catch (IOException fnf) {
-            System.out.println("Failed at Import Detection. Try not to delete the file while using this process.");
+            System.out.println("Failed at Import Detection. Do not delete the file while using this process.");
             fnf.printStackTrace();
         }
         updateImages(bookList);
@@ -218,12 +282,15 @@ public class BookshelfController {
                 //Updates the gridpane with the image of the targeted BookshelfImage
                 //Get Directory of where the program launched
                 String dir = System.getProperty("user.dir");
+
+                //Print statements might just be the problem.
+
                 System.out.println("Image path = " + imageCreation.getBookName().substring(0, imageCreation.getBookName().length()-4) + ".png");
                 pdfThumbnail = loadImage(new FileInputStream(dir + "\\images\\" + imageCreation.getBookName()
                         .substring(0, imageCreation.getBookName().length()-4) + ".png"));
                 thumbnailImages[count] = pdfThumbnail; //Add it to our overall imageview
 
-                updateGridPane(count);
+                // If we place update here, performance becomes much slower - updateGridPane(count);
             } catch (IOException ioe2) {
                 System.out.println("Failed at image creation.");
                 ioe2.printStackTrace();
@@ -233,15 +300,23 @@ public class BookshelfController {
             count++; // avoids inf loop
 
         }
+        // Point to investigate for performance
         updateGridPane(count);
         //System.out.println(thumbnail.toString());
     }
 
     private Image loadImage(InputStream pathToThumbnail) {
-        return new Image(pathToThumbnail, bsaWIDTH, bsaHEIGHT, false, true);
+        return new Image(pathToThumbnail, BSAWIDTH, BSAHEIGHT, false, true);
     }
 
     private void updateGridPane(int count) {
+        // TODO: Progress bar needs to be added to this function - progress bar incrementing.
+        //UPDATED ALGORITHM
+        /* Only update when all photos are captured
+        Option 1:Change parameter information to included count and make recursive(?)
+        Option 2: Only update based on the count provided. When internal counter for
+        function equals count in parameter, then print all the images to the screen.
+         */
         /*
         I want to ONLY update the first 15 images if size of the HashMap is larger than 15.
         I want to ONLY update the necessary images, when size is less than 15.

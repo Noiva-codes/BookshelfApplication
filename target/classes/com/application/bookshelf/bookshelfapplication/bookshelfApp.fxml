@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -9,6 +10,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="basePane" maxHeight="526.0" maxWidth="676.0" minHeight="516.0" minWidth="675.0" prefHeight="526.0" prefWidth="676.0" scaleShape="false" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.bookshelf.bookshelfapplication.BookshelfController">
@@ -19,7 +21,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="searchField" layoutX="14.0" layoutY="40.0" onKeyPressed="#textSearched" prefHeight="25.0" prefWidth="427.0" promptText="Search for a Book!" />
+      <TextField fx:id="searchField" layoutX="14.0" layoutY="40.0" onKeyPressed="#textSearched" onKeyTyped="#showDropdown" prefHeight="25.0" prefWidth="427.0" promptText="Search for a book you own!" />
       <Button fx:id="addButton" layoutX="464.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#addBook" text="Add..." />
       <Button fx:id="importButton" layoutX="528.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#importBooks" text="Import" />
       <ScrollPane fx:id="scrollPane" layoutX="-1.0" layoutY="69.0" prefHeight="455.0" prefWidth="675.0">
@@ -61,5 +63,10 @@
             </AnchorPane>
         </content>
       </ScrollPane>
+      <StackPane fx:id="stackPane" layoutX="14.0" layoutY="64.0" prefHeight="199.0" prefWidth="427.0" visible="true">
+         <children>
+            <ListView fx:id="listViewInStack" opacity="0.8" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>
